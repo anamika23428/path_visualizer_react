@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bar {
+  background: #60a5fa;
+}
+
+.use {
+  background-color: #a2ffa6;
+  color: #000;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #000;
+  cursor: pointer;
+  margin-left: auto;
+  transition: background-color 0.2s ease;
+}
+
+.use:hover {
+  background-color: #312ef8;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
+  color: #ffff;
+}
+
+
+.start {
+  background-color:  #fef08a;
+  color: #000;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #000;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+
+}
+
+.start:hover {
+  background-color: #2563eb;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
+  color: #ffff;
+}
+
+.new {
+  width: 100px;
+  background-color: #fef08a;
+  color: #000;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #000;
+  cursor: pointer;
+  margin-left: auto;
+  transition: background-color 0.2s ease;
+}
+.new:hover {
+  background-color: #2563eb;
+  color: #ffff;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
+}
+.drop_down {
+  background-color: #fef08a; 
+  color: black;
+  border: 1px solid #000; 
+  border-radius: 6px; 
+  padding: 6px; 
+  cursor: pointer; 
+  transition: background-color 0.2s ease, box-shadow 0.2s ease; 
+}
+
+.drop_down:focus {
+  outline: none;   
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
+}
+.speed{
+  
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #fef08a;
+  background-color: #fff;
+  font-size: medium;
+}
+.grid {
+  margin: 100px 0 0;
+}
