@@ -81,6 +81,32 @@
   background-color: #fff;
   font-size: medium;
 }
-.grid {
-  margin: 100px 0 0;
+
+
+.grid-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5px;
+  width: 100%;
+
+}
+
+.grid-row {
+  display: flex;
+}
+
+.grid-node {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #ddd;
+  background-color: white;
+}
+
+.start-node {
+  background-color: green;
+}
+
+.finish-node {
+  background-color: red;
 }
