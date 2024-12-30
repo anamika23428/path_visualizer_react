@@ -104,9 +104,15 @@
 }
 
 .start-node {
-  background-color: green;
+  background-image: url('/src/images/nobi4.jpg'); /* Path to Doraemon image */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .finish-node {
-  background-color: red;
+  background-image: url('/src/images/doraemon.jpg'); /* Path to Nobita image */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
