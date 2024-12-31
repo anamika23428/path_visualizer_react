@@ -116,3 +116,49 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+
+/* how to use card */
+
+
+/* Blur effect */
+.blurred {
+  filter: blur(5px);
+  pointer-events: none; /* Prevent interaction with blurred background */
+}
+
+/* Overlay styles */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+/* Card styling */
+.card {
+  background:#D4F4EC;
+  border: 1px solid black;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
+}
+
+.back {
+  background-color: #70D0C6;
+  padding: 3px 8px;
+  border: 1px solid black;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.back:hover{
+  background-color: #FEA889;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
+}

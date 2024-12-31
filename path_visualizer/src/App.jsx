@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // Ensure you have CSS for styling the grid and other components.
-
+import { Usecard } from "./components/use_card";
 const App = () => {
   const [grid, setGrid] = useState([]);
 
@@ -9,12 +9,18 @@ const App = () => {
     setGrid(getInitialGrid());
   }, []);
 
-  return (
+
+const [showCard, setShowCard] = useState(false);
+
+
+
+  return ( 
     <>
+    <div className={showCard ? "app-container blurred" : "app-container"}>
       <header className="bar flex flex-col p-1">
         <div className="bar_up flex flex-row items-center justify-between pt-4 pb-2 pr-4">
           <h1 className="text-center flex-grow text-3xl font-bold">Path Visualizer</h1>
-          <button className="use">How to Use</button>
+          <button className="use" onClick={() => setShowCard(true)}>How to Use</button>
         </div>
         <div className="option_bar flex flex-row justify-center gap-14 pt-1 px-16">
           <div className="algos flex flex-col p-3">
@@ -79,6 +85,11 @@ const App = () => {
           </div>
         ))}
       </main>
+    </div>
+    {/* showcard */}
+    {showCard && (
+      <Usecard setShowCard={setShowCard} />
+    )}
     </>
   );
 };
@@ -87,7 +98,7 @@ const App = () => {
 const START_NODE_ROW = 10;
 const START_NODE_COL = 15;
 const FINISH_NODE_ROW = 10;
-const FINISH_NODE_COL = 35; //baad ka kaam hai ye 
+const FINISH_NODE_COL = 35; //start and end 
 
 // Helper Functions
 const getInitialGrid = () => {
