@@ -21,6 +21,8 @@
 .use:hover {
   background-color: #312ef8;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
+  transform: scale(1.1); /* Enlarges the button */
+  transition: transfrom 0.2s ease;
   color: #ffff;
 }
 
@@ -38,8 +40,10 @@
 
 .start:hover {
   background-color: #2563eb;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
   color: #ffff;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
+  transform: scale(1.1); /* Enlarges the button */
+  transition: transfrom 0.2s ease;
 }
 
 .new {
@@ -58,7 +62,10 @@
   background-color: #2563eb;
   color: #ffff;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
+  transform: scale(1.1); /* Enlarges the button */
+  transition: transfrom 0.2s ease;
 }
+
 .drop_down {
   background-color: #fef08a; 
   color: black;
@@ -82,7 +89,25 @@
   font-size: medium;
 }
 
+.img_btn{
+    border-width: 2px;
+    border-color: black;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+}
 
+.img_btn:hover{
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
+  transform: scale(1.1); /* Enlarges the button */
+  transition: transfrom 0.2s ease;
+}
+.img_btn:focus{
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
+  transform: scale(1.1); 
+  transition: transfrom 0.2s ease;
+}
 .grid-container {
   display: flex;
   flex-direction: column;
