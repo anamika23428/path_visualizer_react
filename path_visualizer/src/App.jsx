@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Usecard } from "./components/use_card";
+import { dijkstra, getNodesInShortestPathOrder } from "./algorithms/dijkstra";
 
 const App = () => {
   const [grid, setGrid] = useState([]);
@@ -10,6 +11,8 @@ const App = () => {
   const [doraMode, setDoraMode] = useState(false);
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
   const [gianMode, setGianMode] = useState(false);
+  const [visitedNodeIndices, setVisitedNodeIndices] = useState([]); // New state for visited nodes
+
   useEffect(() => {
     setGrid(getInitialGrid(startNode, endNode));
   }, [startNode, endNode]);
@@ -25,22 +28,62 @@ const App = () => {
   };
 
   const handleMouseDown = (row, col) => {
-    if(gianMode){
-    console.log(`Mouse down at row: ${row}, col: ${col}`);
-    const newGrid = getNewGridWithWallToggled(grid, row, col);
-    setGrid(newGrid);
-    setMouseIsPressed(true);}
+    if (gianMode) {
+      const newGrid = getNewGridWithWallToggled(grid, row, col);
+      setGrid(newGrid);
+      setMouseIsPressed(true);
+    }
   };
 
   const handleMouseEnter = (row, col) => {
-    if (!mouseIsPressed || !gianMode) return; 
-    console.log(`Mouse enter at row: ${row}, col: ${col}`);
+    if (!mouseIsPressed || !gianMode) return;
     const newGrid = getNewGridWithWallToggled(grid, row, col);
     setGrid(newGrid);
   };
+
   const handleMouseUp = () => {
     setMouseIsPressed(false);
     setGianMode(false);
+  };
+
+  // Updated animateDijkstra function with staggered node updates
+  const animateDijkstra = (visitedNodesInOrder, nodesInShortestPathOrder) => {
+    const delay=5;
+    for (let i = 0; i < visitedNodesInOrder.length; i++) {
+      setTimeout(() => {
+        const node = visitedNodesInOrder[i];
+        setVisitedNodeIndices((prev) => [...prev, node]); // Add node to visited indices
+
+        if (i === visitedNodesInOrder.length - 1) {
+          setTimeout(() => {
+            animateShortestPath(nodesInShortestPathOrder);
+          }, 100);
+        }
+      }, delay * i); // Delay of 50ms for staggered animation
+    }
+  };
+
+  const animateShortestPath = (nodesInShortestPathOrder) => {
+    const delay=5;
+    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+      setTimeout(() => {
+        const node = nodesInShortestPathOrder[i];
+        setGrid((prevGrid) => {
+          const newGrid = prevGrid.map((row) =>
+            row.map((n) => (n.row === node.row && n.col === node.col ? { ...n, isShortestPath: true } : n))
+          );
+          return newGrid;
+        });
+      }, delay * i);
+    }
+  };
+
+  const visualizeDijkstra = () => {
+    const start = grid[startNode.row][startNode.col];
+    const finish = grid[endNode.row][endNode.col];
+    const visitedNodesInOrder = dijkstra(grid, start, finish);
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finish);
+    animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   };
 
   return (
@@ -48,9 +91,7 @@ const App = () => {
       <div className={showCard ? "app-container blurred" : "app-container"}>
         <header className="bar flex flex-col p-1">
           <div className="bar_up flex flex-row items-center justify-between pt-4 pb-2 pr-4">
-            <h1 className="text-center flex-grow text-3xl font-bold">
-              Path Visualizer
-            </h1>
+            <h1 className="text-center flex-grow text-3xl font-bold">Path Visualizer</h1>
             <button className="use" onClick={() => setShowCard(true)}>
               How to Use
             </button>
@@ -76,29 +117,50 @@ const App = () => {
             </div>
             <div className="flex justify-center items-center gap-10">
               <img
-                src="/src/images/doraemon.jpg" alt="Doraemon" className="img_btn"
+                src="/src/images/doraemon.jpg"
+                alt="Doraemon"
+                className="img_btn"
                 onClick={() => setDoraMode(true)}
                 tabIndex={0}
               />
               <img
-                src="/src/images/nobi4.jpg" alt="Nobita's Face" className="img_btn"
+                src="/src/images/nobi4.jpg"
+                alt="Nobita's Face"
+                className="img_btn"
                 onClick={() => setNobitaMode(true)}
                 tabIndex={0}
               />
-              <img src="/src/images/gian.jpg" alt="Gian's Face" className="img_btn"
-              onClick={() => setGianMode(true)}
+              <img
+                src="/src/images/gian.jpg"
+                alt="Gian's Face"
+                className="img_btn"
+                onClick={() => setGianMode(true)}
                 tabIndex={0}
-              
-               />
+              />
             </div>
             <div className="flex justify-center items-center">
-              <button id="start" className="start" aria-label="Start Visualization">
+              <button
+                id="start"
+                className="start"
+                aria-label="Start Visualization"
+                onClick={() => visualizeDijkstra()}
+              >
                 Visualize
               </button>
             </div>
             <div className="actions flex flex-col justify-center space-y-2 align-center">
-              <button className="new">Clear Path</button>
-              <button className="new">Reset</button>
+              <button
+                className="new"
+                onClick={() => {
+                  setGrid(getInitialGrid(startNode, endNode));
+                  setVisitedNodeIndices([]);
+                }}
+              >
+                Clear Path
+              </button>
+              <button className="new" onClick={() => window.location.reload()}>
+                Reset
+              </button>
             </div>
           </div>
         </header>
@@ -110,9 +172,11 @@ const App = () => {
               {row.map((node, nodeIdx) => (
                 <div
                   key={nodeIdx}
-                  className={`grid-node ${node.isStart ? "start-node" : ""} ${
-                    node.isFinish ? "finish-node" : ""
-                  } ${node.isWall ? "iswall" : ""}`}
+                  className={`grid-node ${node.isStart ? "start-node" : ""}
+                   ${node.isFinish ? "finish-node" : ""}
+                   ${node.isWall ? "iswall" : ""} 
+                   ${node.isShortestPath ? "node-shortest-path" : ""} 
+                   ${visitedNodeIndices.some(visitedNode => visitedNode.row === node.row && visitedNode.col === node.col) && !node.isShortestPath ? "node-visited" : ""}`}
                   onClick={() => handleGridClick(node.row, node.col)}
                   onMouseDown={() => handleMouseDown(node.row, node.col)}
                   onMouseEnter={() => handleMouseEnter(node.row, node.col)}
@@ -159,12 +223,13 @@ const createNode = (col, row, startNode, endNode) => {
 const getNewGridWithWallToggled = (grid, row, col) => {
   const newGrid = grid.slice();
   const node = newGrid[row][col];
-  const newNode = {
-    ...node,
-    // ...node copies all the properties (like row, col, etc.) from the original node.
-    isWall: !node.isWall,
-  };
-  newGrid[row][col] = newNode;
+  if (!node.isStart && !node.isFinish) {
+    const newNode = {
+      ...node,
+      isWall: !node.isWall,
+    };
+    newGrid[row][col] = newNode;
+  }
   return newGrid;
 };
 
