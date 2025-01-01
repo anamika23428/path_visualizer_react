@@ -4,24 +4,43 @@ import { Usecard } from "./components/use_card";
 const App = () => {
   const [grid, setGrid] = useState([]);
   const [startNode, setStartNode] = useState({ row: null, col: null });
-  const [nobitaMode, setNobitaMode] = useState(false); 
+  const [nobitaMode, setNobitaMode] = useState(false);
   const [showCard, setShowCard] = useState(false);
-  const [endNode, setEndNode] = useState({ row: null, col: null });  
-  const [doraMode , setDoraMode] = useState(false);
-
-  // Combine useEffect for grid updates
+  const [endNode, setEndNode] = useState({ row: null, col: null });
+  const [doraMode, setDoraMode] = useState(false);
+  const [mouseIsPressed, setMouseIsPressed] = useState(false);
+  const [gianMode, setGianMode] = useState(false);
   useEffect(() => {
-    setGrid(getInitialGrid(startNode, endNode)); // Only one effect to handle both nodes
+    setGrid(getInitialGrid(startNode, endNode));
   }, [startNode, endNode]);
 
   const handleGridClick = (row, col) => {
     if (nobitaMode) {
       setStartNode({ row, col });
-      setNobitaMode(false); // Deactivate Nobita mode after setting the start node
-    } else if (doraMode) { // Using doraMode for end node
+      setNobitaMode(false);
+    } else if (doraMode) {
       setEndNode({ row, col });
-      setDoraMode(false); // Reset Dora mode after setting the end node
+      setDoraMode(false);
     }
+  };
+
+  const handleMouseDown = (row, col) => {
+    if(gianMode){
+    console.log(`Mouse down at row: ${row}, col: ${col}`);
+    const newGrid = getNewGridWithWallToggled(grid, row, col);
+    setGrid(newGrid);
+    setMouseIsPressed(true);}
+  };
+
+  const handleMouseEnter = (row, col) => {
+    if (!mouseIsPressed || !gianMode) return; 
+    console.log(`Mouse enter at row: ${row}, col: ${col}`);
+    const newGrid = getNewGridWithWallToggled(grid, row, col);
+    setGrid(newGrid);
+  };
+  const handleMouseUp = () => {
+    setMouseIsPressed(false);
+    setGianMode(false);
   };
 
   return (
@@ -29,8 +48,12 @@ const App = () => {
       <div className={showCard ? "app-container blurred" : "app-container"}>
         <header className="bar flex flex-col p-1">
           <div className="bar_up flex flex-row items-center justify-between pt-4 pb-2 pr-4">
-            <h1 className="text-center flex-grow text-3xl font-bold">Path Visualizer</h1>
-            <button className="use" onClick={() => setShowCard(true)}>How to Use</button>
+            <h1 className="text-center flex-grow text-3xl font-bold">
+              Path Visualizer
+            </h1>
+            <button className="use" onClick={() => setShowCard(true)}>
+              How to Use
+            </button>
           </div>
           <div className="option_bar flex flex-row justify-center gap-14 pt-1 px-16">
             <div className="algos flex flex-col p-3">
@@ -47,26 +70,26 @@ const App = () => {
                 min="1"
                 max="5"
                 step="1"
-                value={4}
+                defaultValue={4}
                 onChange={(e) => console.log(e.target.value)}
               />
             </div>
             <div className="flex justify-center items-center gap-10">
               <img
                 src="/src/images/doraemon.jpg" alt="Doraemon" className="img_btn"
-                onClick={(e) => {
-                  setDoraMode(true); // Activate Dora mode
-                  e.target.focus();
-                }}
-                tabIndex={0} />
+                onClick={() => setDoraMode(true)}
+                tabIndex={0}
+              />
               <img
-                src="/src/images/nobi4.jpg" alt="Nobita's Face" className="img_btn" 
-                onClick={(e) => {
-                  setNobitaMode(true);  // Activate Nobita mode
-                  e.target.focus(); 
-                }}
-                tabIndex={0} />
-              <img src="/src/images/gian.jpg" alt="Gian's Face" className="img_btn"/>
+                src="/src/images/nobi4.jpg" alt="Nobita's Face" className="img_btn"
+                onClick={() => setNobitaMode(true)}
+                tabIndex={0}
+              />
+              <img src="/src/images/gian.jpg" alt="Gian's Face" className="img_btn"
+              onClick={() => setGianMode(true)}
+                tabIndex={0}
+              
+               />
             </div>
             <div className="flex justify-center items-center">
               <button id="start" className="start" aria-label="Start Visualization">
@@ -87,8 +110,13 @@ const App = () => {
               {row.map((node, nodeIdx) => (
                 <div
                   key={nodeIdx}
-                  className={`grid-node ${node.isStart ? "start-node" : ""} ${node.isFinish ? "finish-node" : ""}`}
+                  className={`grid-node ${node.isStart ? "start-node" : ""} ${
+                    node.isFinish ? "finish-node" : ""
+                  } ${node.isWall ? "iswall" : ""}`}
                   onClick={() => handleGridClick(node.row, node.col)}
+                  onMouseDown={() => handleMouseDown(node.row, node.col)}
+                  onMouseEnter={() => handleMouseEnter(node.row, node.col)}
+                  onMouseUp={handleMouseUp}
                 ></div>
               ))}
             </div>
@@ -108,7 +136,7 @@ const getInitialGrid = (startNode, endNode) => {
   for (let row = 0; row < 17; row++) {
     const currentRow = [];
     for (let col = 0; col < 60; col++) {
-      currentRow.push(createNode(col, row, startNode, endNode)); // Pass both startNode and endNode
+      currentRow.push(createNode(col, row, startNode, endNode));
     }
     grid.push(currentRow);
   }
@@ -126,6 +154,18 @@ const createNode = (col, row, startNode, endNode) => {
     isWall: false,
     previousNode: null,
   };
+};
+
+const getNewGridWithWallToggled = (grid, row, col) => {
+  const newGrid = grid.slice();
+  const node = newGrid[row][col];
+  const newNode = {
+    ...node,
+    // ...node copies all the properties (like row, col, etc.) from the original node.
+    isWall: !node.isWall,
+  };
+  newGrid[row][col] = newNode;
+  return newGrid;
 };
 
 export default App;

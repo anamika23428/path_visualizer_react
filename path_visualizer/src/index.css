@@ -141,7 +141,12 @@
   background-position: center;
   background-repeat: no-repeat;
 }
-
+.grid-node.iswall {
+  background-image: url('/src/images/gian.jpg'); /* Path to Nobita image */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 /* how to use card */
 
 
