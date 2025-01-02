@@ -124,13 +124,14 @@ const App = () => {
     <>
       <div className={showCard ? "app-container blurred" : "app-container"}>
         <header className="bar flex flex-col p-1">
-          <div className="bar_up flex flex-row items-center justify-between pt-4 pb-2 pr-4">
+          <div className="bar_up flex flex-row items-center justify-between pt-3 pb-1 pr-4">
             <h1 className="text-center flex-grow text-3xl font-bold">Path Visualizer</h1>
             <button className="use" onClick={() => setShowCard(true)}>
               How to Use
             </button>
           </div>
-          <div className="option_bar flex flex-row justify-center gap-14 pt-1 px-16">
+          <h2 class="text-center mb-1">Help Nobita reach Doraemon by dodging Gian's punch along the way!</h2>
+          <div className="option_bar flex flex-row justify-center gap-14 px-14 pb-0">
             <div className="algos flex flex-col p-3">
             <select id="path-options" className="drop_down" 
             value={algo} onChange={(e) =>setAlgo(e.target.value)} >

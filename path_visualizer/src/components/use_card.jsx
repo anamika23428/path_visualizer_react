@@ -36,7 +36,7 @@ export const Usecard = ({ setShowCard }) => {
     ],
     6: [
       "6. Clear Path:",
-      "   - Click the 'Clear Path' button to reset the grid while keeping walls, start, and end nodes intact."
+      "   - Click the 'Clear Path' button to reset the grid while keeping  start, and end nodes intact."
     ],
     7: [
       "7. Reset Grid:",
