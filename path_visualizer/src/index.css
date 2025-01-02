@@ -196,11 +196,12 @@
   border: 1px solid black;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 300px;
+  width: 350px;
+  height: 300px;
   text-align: center;
 }
 
-.back {
+.use_btn {
   background-color: #70D0C6;
   padding: 3px 8px;
   border: 1px solid black;
@@ -208,7 +209,16 @@
   font-size: 12px;
   cursor: pointer;
 }
-.back:hover{
+.use_btn:hover{
   background-color: #FEA889;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
+}
+.next_end{
+  width:fit-content;
+  background-color: gray;
+  padding: 3px 8px;
+  border: 1px solid black;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: not-allowed;
 }
