@@ -1,8 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Usecard } from "./components/use_card";
-import { dijkstra, getNodesInShortestPathOrder } from "./algorithms/dijkstra";
-
+import { dijkstra, getNodesInShortestPathOrder_dijkstra } from "./algorithms/dijkstra";
+import { dfs, getNodesInShortestPathOrder_dfs } from "./algorithms/dfs";
+import { bfs, getNodesInShortestPathOrder_bfs } from "./algorithms/bfs";
+// import "./components/node.css";
+const algorithms = {
+  "Dijkstra": dijkstra, 
+  "DFS": dfs, 
+  "BFS": bfs, 
+};
+const shortestpath={
+  "Dijkstra":getNodesInShortestPathOrder_dijkstra,
+  "DFS":getNodesInShortestPathOrder_dfs,
+  "BFS":getNodesInShortestPathOrder_bfs,
+}
 const App = () => {
+  const [speed , setSpeed] = useState(3);
+  const [algo ,setAlgo] =useState("Dijkstra")
   const [grid, setGrid] = useState([]);
   const [startNode, setStartNode] = useState({ row: null, col: null });
   const [nobitaMode, setNobitaMode] = useState(false);
@@ -12,7 +26,7 @@ const App = () => {
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
   const [gianMode, setGianMode] = useState(false);
   const [visitedNodeIndices, setVisitedNodeIndices] = useState([]); // New state for visited nodes
-
+  console.log(algo)
   useEffect(() => {
     setGrid(getInitialGrid(startNode, endNode));
   }, [startNode, endNode]);
@@ -47,8 +61,8 @@ const App = () => {
   };
 
   // Updated animateDijkstra function with staggered node updates
-  const animateDijkstra = (visitedNodesInOrder, nodesInShortestPathOrder) => {
-    const delay=5;
+  const animatealgo = (visitedNodesInOrder, nodesInShortestPathOrder) => {
+    const delay=25/speed;
     for (let i = 0; i < visitedNodesInOrder.length; i++) {
       setTimeout(() => {
         const node = visitedNodesInOrder[i];
@@ -64,7 +78,7 @@ const App = () => {
   };
 
   const animateShortestPath = (nodesInShortestPathOrder) => {
-    const delay=5;
+    const delay=100/speed;
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
       setTimeout(() => {
         const node = nodesInShortestPathOrder[i];
@@ -78,13 +92,33 @@ const App = () => {
     }
   };
 
-  const visualizeDijkstra = () => {
+  const visualizealgo = (algo) => {
+    // Validate start and end nodes
+    if (!startNode || !endNode || startNode.row === undefined || endNode.row === undefined) {
+      alert("Please set both start and end nodes!");
+      return;
+    }
+  
+    // Get start and finish nodes from the grid
     const start = grid[startNode.row][startNode.col];
     const finish = grid[endNode.row][endNode.col];
-    const visitedNodesInOrder = dijkstra(grid, start, finish);
-    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finish);
-    animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+  
+    // Validate algorithm
+    if (!algorithms[algo] || typeof algorithms[algo] !== "function") {
+      console.error(`Algorithm "${algo}" is not valid or not callable.`);
+      return;
+    }
+  
+    // Execute algorithm and visualize
+    try {
+      const visitedNodesInOrder = algorithms[algo](grid, start, finish);
+      const nodesInShortestPathOrder = shortestpath[algo](finish);
+      animatealgo(visitedNodesInOrder, nodesInShortestPathOrder);
+    } catch (error) {
+      console.error("Error executing algorithm:", error);
+    }
   };
+  
 
   return (
     <>
@@ -98,22 +132,17 @@ const App = () => {
           </div>
           <div className="option_bar flex flex-row justify-center gap-14 pt-1 px-16">
             <div className="algos flex flex-col p-3">
-              <select id="path-options" className="drop_down">
-                <option value="Dijkstra">Dijkstra</option>
-                <option value="Bellman-Ford">Bellman-Ford</option>
-                <option value="DFS">DFS</option>
-              </select>
+            <select id="path-options" className="drop_down" 
+            value={algo} onChange={(e) =>setAlgo(e.target.value)} >
+                 <option value="Dijkstra">Dijkstra</option>
+                 {/* <option value="Bellman-Ford">Bellman-Ford</option> */}
+                 <option value="DFS">DFS</option>
+                 <option value="BFS">BFS</option>
+            </select>
               <p className="pt-2">Speed of algorithm:</p>
               <input
-                id="a_speed"
-                className="speed"
-                type="range"
-                min="1"
-                max="5"
-                step="1"
-                defaultValue={4}
-                onChange={(e) => console.log(e.target.value)}
-              />
+                className="speed" type="range" min="1" max="5" step="1" defaultValue={4}
+                onChange={(e) =>setSpeed(e.target.value)} />
             </div>
             <div className="flex justify-center items-center gap-10">
               <img
@@ -143,7 +172,7 @@ const App = () => {
                 id="start"
                 className="start"
                 aria-label="Start Visualization"
-                onClick={() => visualizeDijkstra()}
+                onClick={() => visualizealgo(algo)}
               >
                 Visualize
               </button>
