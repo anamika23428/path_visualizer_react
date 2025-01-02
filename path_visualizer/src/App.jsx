@@ -140,7 +140,7 @@ const App = () => {
                  <option value="DFS">DFS</option>
                  <option value="BFS">BFS</option>
             </select>
-              <p className="pt-2">Speed of algorithm:</p>
+              <p className="pt-2">Speed of visualization:</p>
               <input
                 className="speed" type="range" min="1" max="5" step="1" defaultValue={4}
                 onChange={(e) =>setSpeed(e.target.value)} />
