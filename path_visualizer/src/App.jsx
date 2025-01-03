@@ -3,7 +3,7 @@ import { Usecard } from "./components/use_card";
 import { dijkstra, getNodesInShortestPathOrder_dijkstra } from "./algorithms/dijkstra";
 import { dfs, getNodesInShortestPathOrder_dfs } from "./algorithms/dfs";
 import { bfs, getNodesInShortestPathOrder_bfs } from "./algorithms/bfs";
-// import "./components/node.css";
+
 const algorithms = {
   "Dijkstra": dijkstra, 
   "DFS": dfs, 
