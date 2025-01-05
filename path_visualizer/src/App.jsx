@@ -3,7 +3,6 @@ import { Usecard } from "./components/use_card";
 import { dijkstra, getNodesInShortestPathOrder_dijkstra } from "./algorithms/dijkstra";
 import { dfs, getNodesInShortestPathOrder_dfs } from "./algorithms/dfs";
 import { bfs, getNodesInShortestPathOrder_bfs } from "./algorithms/bfs";
-
 const algorithms = {
   "Dijkstra": dijkstra, 
   "DFS": dfs, 
@@ -136,7 +135,6 @@ const App = () => {
             <select id="path-options" className="drop_down" 
             value={algo} onChange={(e) =>setAlgo(e.target.value)} >
                  <option value="Dijkstra">Dijkstra</option>
-                 {/* <option value="Bellman-Ford">Bellman-Ford</option> */}
                  <option value="DFS">DFS</option>
                  <option value="BFS">BFS</option>
             </select>
@@ -147,21 +145,21 @@ const App = () => {
             </div>
             <div className="flex justify-center items-center gap-10">
               <img
-                src="/src/images/doraemon.jpg"
+                src="/images/doraemon.jpg"
                 alt="Doraemon"
                 className="img_btn"
                 onClick={() => setDoraMode(true)}
                 tabIndex={0}
               />
               <img
-                src="/src/images/nobi4.jpg"
+                src="/images/nobi4.jpg"
                 alt="Nobita's Face"
                 className="img_btn"
                 onClick={() => setNobitaMode(true)}
                 tabIndex={0}
               />
               <img
-                src="/src/images/gian.jpg"
+                src="/images/gian.jpg"
                 alt="Gian's Face"
                 className="img_btn"
                 onClick={() => setGianMode(true)}

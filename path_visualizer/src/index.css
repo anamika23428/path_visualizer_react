@@ -130,7 +130,7 @@
 }
 
 .start-node {
-  background-image: url('/src/images/nobi4.jpg'); /* Path to Doraemon image */
+  background-image: url('/images/nobi4.jpg'); /* Path to Doraemon image */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -141,7 +141,7 @@
 }
 
 .finish-node {
-  background-image: url('/src/images/doraemon.jpg'); /* Path to Nobita image */
+  background-image: url('/images/doraemon.jpg'); /* Path to Nobita image */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -151,7 +151,7 @@
   border-radius: 50%;
 }
 .grid-node.iswall {
-  background-image: url('/src/images/gian.jpg'); /* Path to Nobita image */
+  background-image: url('/images/gian.jpg'); /* Path to Nobita image */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
