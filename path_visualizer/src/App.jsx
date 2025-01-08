@@ -143,7 +143,7 @@ const App = () => {
                 className="speed" type="range" min="1" max="5" step="1" defaultValue={4}
                 onChange={(e) =>setSpeed(e.target.value)} />
             </div>
-            <div className="flex justify-center items-center gap-10">
+            <div className="flex-container md:flex justify-center items-center gap-10">
               <img
                 src="/images/doraemon.jpg"
                 alt="Doraemon"
